@@ -1,5 +1,9 @@
 const Sequelize = require('sequelize')
 const authorsModel = require('./authors')
+const genresModel = require('./genres')
+const booksModel = require('./books')
+const booksGenresModel = require('./booksGenres')
+
 
 const connection = new Sequelize('novels', 'novels', 'novels1234', {
   host: 'localhost',
@@ -7,7 +11,21 @@ const connection = new Sequelize('novels', 'novels', 'novels1234', {
 })
 
 const authors = authorsModel(connection, Sequelize)
+const genres = genresModel(connection, Sequelize)
+const books = booksModel(connection, Sequelize)
+const booksGenres = booksGenresModel(connection, Sequelize)
+
+authors.hasMany(books);
+books.belongsTo(authors);
+genres.hasMany(booksGenres);
+booksGenres.belongsTo(genres);
+books.hasMany(booksGenres);
+booksGenres.belongsTo(books);
+
 
 module.exports = {
   authors,
+  genres,
+  books,
+  booksGenres,
 }
