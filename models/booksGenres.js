@@ -9,8 +9,7 @@ const booksGenres = (connection, Sequelize, books, genres) => {
       type: Sequelize.INTEGER,
       references: { model: genres, key: 'id' }
     }
-  },
-  { paranoid: true })
+  })
 }
 
 module.exports = booksGenres

@@ -15,13 +15,11 @@ const genres = genresModel(connection, Sequelize)
 const books = booksModel(connection, Sequelize)
 const booksGenres = booksGenresModel(connection, Sequelize)
 
-authors.hasMany(books);
-books.belongsTo(authors);
-genres.hasMany(booksGenres);
-booksGenres.belongsTo(genres);
-books.hasMany(booksGenres);
-booksGenres.belongsTo(books);
+authors.hasMany(books)
+books.belongsTo(authors)
 
+genres.belongsToMany(books, { through: booksGenres })
+books.belongsToMany(genres, { through: booksGenres })
 
 module.exports = {
   authors,
