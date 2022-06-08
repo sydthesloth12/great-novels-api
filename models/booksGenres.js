@@ -1,7 +1,7 @@
 const booksGenres = (connection, Sequelize, books, genres) => {
   return connection.define('booksGenres', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    booksId: {
+    bookId: {
       type: Sequelize.INTEGER,
       references: { model: books, key: 'id' }
     },
@@ -9,7 +9,7 @@ const booksGenres = (connection, Sequelize, books, genres) => {
       type: Sequelize.INTEGER,
       references: { model: genres, key: 'id' }
     }
-  })
+  }, { paranoid: true })
 }
 
 module.exports = booksGenres

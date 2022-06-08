@@ -1,6 +1,8 @@
+const models = require('../models')
+
 const getAllBooksWithAuthorGenres = async (req, res) => {
   try {
-    const allBooks = await models.Novels.findAll({
+    const allBooks = await models.books.findAll({
       include: [{ model: models.authors }, { model: models.genres }]
     })
 
@@ -21,7 +23,7 @@ const getBookByIdWithAuthorGenres = async (req, res) => {
     })
 
     return book
-      ? res.status(200).send(novel)
+      ? res.status(200).send(book)
       : res.sendStatus(404)
   } catch (error) {
     return res.sendStatus(500)

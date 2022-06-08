@@ -1,6 +1,8 @@
-CREATE DATABASE novels;
+drop database if exists novels;
 
-create USER 'novels'@'localhost' IDENTIFIED BY 'novels1234';
+CREATE DATABASE if not exists novels;
+
+create user if not exists 'novels'@'localhost' IDENTIFIED BY 'novels1234';
 
 GRANT ALL ON novels.* TO 'novels'@'localhost';
 
@@ -31,25 +33,31 @@ CREATE TABLE books (
 CREATE TABLE genres (
 	id int auto_increment,
     genreType VARCHAR(225),
+    createdAt DATETIME DEFAULT NOW(),
+	updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+	deletedAt DATETIME,
     primary key(id)
+    
 );
 
 CREATE TABLE booksGenres (
 	id int auto_increment,
     bookId INT,
     genreId INT, 
+    createdAt DATETIME DEFAULT NOW(),
+	updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+	deletedAt DATETIME,
     primary key (id),
     foreign key (bookId) references books(id),
     foreign key (genreId) references genres(id)
  );
 
-INSERT INTO authors (firstName, lastName) VALUES ("Arthur", "Miller");
+INSERT INTO authors (firstName, lastName) VALUES ("Bram", "Stoker");
+INSERT INTO authors (firstName, lastName) VALUES ("Leo", "Tolstoy");
 INSERT INTO authors (firstName, lastName) VALUES ("Alexandre", "Dumas");
-INSERT INTO authors (firstName, lastName) VALUES ("Charles", "Dickens");
+INSERT INTO authors (firstName, lastName) VALUES ("Fyodor", "Dostoyevsky");
 INSERT INTO authors (firstName, lastName) VALUES ("George", "Orwell");
-INSERT INTO authors (firstName, lastName) VALUES ("Oscar", "Wilde");
 
-insert into books (title, authorId) VALUES ("Dracula", 2);
 
 insert into genres (genreType) VALUES ("Fiction");
 insert into genres (genreType) VALUES ("Horror");
@@ -63,31 +71,32 @@ insert into genres (genreType) VALUES ("Mystery");
 insert into genres (genreType) VALUES ("Science Fiction");
 insert into genres (genreType) VALUES ("Dystopia");
 
-insert into books (title, authorId) VALUES ("War and Peace", 1);
+insert into books (title, authorId) VALUES ("Dracula", 1);
+insert into books (title, authorId) VALUES ("War and Peace", 2);
 insert into books (title, authorId) VALUES ("Three Musketeers", 3);
 insert into books (title, authorId) VALUES ("Crime and Punishment", 4);
 insert into books (title, authorId) VALUES ("Animal Farm", 5);
 
 
-insert into booksGenres (bookId, genreId) VALUES (1,4);
 insert into booksGenres (bookId, genreId) VALUES (1,1);
 insert into booksGenres (bookId, genreId) VALUES (1,2);
+insert into booksGenres (bookId, genreId) VALUES (1,3);
 
+insert into booksGenres (bookId, genreId) VALUES (2,1);
 insert into booksGenres (bookId, genreId) VALUES (2,4);
 insert into booksGenres (bookId, genreId) VALUES (2,5);
 insert into booksGenres (bookId, genreId) VALUES (2,6);
-insert into booksGenres (bookId, genreId) VALUES (2,7);
 
-insert into booksGenres (bookId, genreId) VALUES (4,4);
-insert into booksGenres (bookId, genreId) VALUES (4,5);
-insert into booksGenres (bookId, genreId) VALUES (4,8);
+insert into booksGenres (bookId, genreId) VALUES (3,1);
+insert into booksGenres (bookId, genreId) VALUES (3,4);
+insert into booksGenres (bookId, genreId) VALUES (3,7);
+insert into booksGenres (bookId, genreId) VALUES (3,8);
+
+insert into booksGenres (bookId, genreId) VALUES (4,1);
+insert into booksGenres (bookId, genreId) VALUES (4,6);
 insert into booksGenres (bookId, genreId) VALUES (4,9);
 
-insert into booksGenres (bookId, genreId) VALUES (5,4);
-insert into booksGenres (bookId, genreId) VALUES (5,7);
+
+insert into booksGenres (bookId, genreId) VALUES (5,1);
 insert into booksGenres (bookId, genreId) VALUES (5,10);
-
-
-insert into booksGenres (bookId, genreId) VALUES (6,4);
-insert into booksGenres (bookId, genreId) VALUES (6,11);
-insert into booksGenres (bookId, genreId) VALUES (6,12);
+insert into booksGenres (bookId, genreId) VALUES (5,11);
