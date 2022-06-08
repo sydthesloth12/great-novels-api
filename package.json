@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon index.js",
-    "lint": "./node_modules/.bin/eslint --format codeframe .",
-    "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe ."
+    "lint": "eslint --format stylish .",
+    "lint:fix": "eslint --format stylish --fix .",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
