@@ -14,23 +14,29 @@ const getAuthors = async (req, res) => {
   }
 }
 
-const getAuthorById = async (req, res) => {
+const getAuthorByLastNameFuzzy = async (req, res) => {
   try {
-    const { id } = req.params
+    const { lastName } = req.params
 
-    if (!id) return res.sendStatus(404)
+    if (!lastName) return res.sendStatus(404)
 
     const foundAuthor = await models.authors.findOne({
-      where: { id },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
+      where: {
+        lastName: { [models.Op.like]: `%${lastName}%` }
+      },
+      include: [{ model: models.books, attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] } }]
     })
+
 
 
     if (!foundAuthor) return res.sendStatus(404)
 
     return res.send(foundAuthor)
   } catch (error) {
+    console.log(error)
     return res.sendStatus(500)
   }
 }
 
-module.exports = { getAuthors, getAuthorById }
+module.exports = { getAuthors, getAuthorByLastNameFuzzy }
