@@ -1,12 +1,26 @@
 const models = require('../models')
 
+const getAllAuthors = async (req, res) => {
+  try { 
+    const { authors } = req.params
+
+    const author = await models.authors.findAll()
+
+    return author
+    ? res.send(author)
+    : res.sendStatus(404)
+  } catch (error) {
+    return res.sendStatus(500)
+  } 
+}
+
 const getAuthorBySearchTermWithBooksGenres = async (req, res) => {
   try {
     const { searchTerm } = req.params
     const author = await models.authors.findAll({
       where: {
         [models.Op.or]: [
-          { nameLast: { [models.Op.like]: `%${searchTerm}%` } },
+          { lastName: { [models.Op.like]: `%${searchTerm}%` } },
           { id: searchTerm },
         ]
       },
@@ -18,32 +32,13 @@ const getAuthorBySearchTermWithBooksGenres = async (req, res) => {
       }]
     })
 
-    return res.send(author)
+    return author.length
       ? res.status(200).send(author)
       : res.sendStatus(404)
   } catch (error) {
-    console.log(error)
     return res.sendStatus(500)
   }
 }
 
-const getAuthorById = async (req, res) => {
-  try {
-    const { id } = req.params
 
-    if (!id) return res.sendStatus(404)
-
-    const foundAuthor = await models.authors.findOne({
-      where: { id },
-    })
-
-
-    if (!foundAuthor) return res.sendStatus(404)
-
-    return res.send(foundAuthor)
-  } catch (error) {
-    return res.sendStatus(500)
-  }
-}
-
-module.exports = { getAuthorById, getAuthorBySearchTermWithBooksGenres }
+module.exports = { getAllAuthors, getAuthorBySearchTermWithBooksGenres }

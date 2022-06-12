@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('authors', {
@@ -17,6 +15,12 @@ module.exports = {
     await queryInterface.createTable('genres', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       genreType: { type: Sequelize.STRING, allowNull: false },
+      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
+      updatedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      },
+      deletedAt: { type: Sequelize.DATE },
     })
 
     await queryInterface.createTable('books', {
@@ -43,7 +47,13 @@ module.exports = {
       genreId: {
         type: Sequelize.INTEGER,
         references: { model: "genres", key: 'id' }
-      }
+      },
+      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
+      updatedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      },
+      deletedAt: { type: Sequelize.DATE },
     })
   },
 
