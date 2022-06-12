@@ -14,15 +14,20 @@ const getAllBooksWithAuthorGenres = async (req, res) => {
   }
 }
 
-const getBookByIdWithAuthorGenres = async (req, res) => {
+const getBookbySearchOrIdWithAuthorsGenres = async (req, res) => {
   try {
-    const { id } = req.params
-    const book = await models.books.findOne({
-      where: { id },
+    const { searchTerm } = req.params
+    const book = await models.books.findAll({
+      where: {
+        [models.Op.or]: [
+          { title: { [models.Op.like]: `%${searchTerm}%` } },
+          { id: searchTerm },
+        ]
+      },
       include: [{ model: models.authors }, { model: models.genres }]
     })
 
-    return book
+    return book.length
       ? res.status(200).send(book)
       : res.sendStatus(404)
   } catch (error) {
@@ -30,4 +35,4 @@ const getBookByIdWithAuthorGenres = async (req, res) => {
   }
 }
 
-module.exports = { getAllBooksWithAuthorGenres, getBookByIdWithAuthorGenres }
+module.exports = { getAllBooksWithAuthorGenres, getBookbySearchOrIdWithAuthorsGenres }
